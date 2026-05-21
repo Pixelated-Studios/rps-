@@ -1,4 +1,4 @@
-// ci.yml
+# ci.yml
 name: iOS Build
 
 on:
@@ -17,6 +17,23 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v2
         with:
           xcode-version: "15"   # Xcode 15 supports iOS 18
-      - name: Build app
+      - name: Archive app (unsigned)
         run: |
-          xcodebuild -scheme RockPaperScissorsPlus -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 15,OS=latest" clean build
+          xcodebuild \
+            -scheme RockPaperScissorsPlus \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,name=iPhone 15,OS=latest" \
+            -archivePath ${{ runner.temp }}/RockPaperScissorsPlus.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            clean archive
+      - name: Package .app into .ipa (unsigned)
+        run: |
+          APP_PATH=${{ runner.temp }}/RockPaperScissorsPlus.xcarchive/Products/Applications/RockPaperScissorsPlus.app
+          OUTPUT=${{ runner.temp }}/RockPaperScissorsPlus.ipa
+          cd $(dirname "$APP_PATH")
+          zip -r "$OUTPUT" "$(basename "$APP_PATH")"
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RockPaperScissorsPlus.ipa
+          path: ${{ runner.temp }}/RockPaperScissorsPlus.ipa
