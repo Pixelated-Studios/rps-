@@ -1,0 +1,16 @@
+name: RockPaperScissorsPlus
+options:
+  bundleIdPrefix: com.pixelatedstudios
+settings:
+  PRODUCT_BUNDLE_IDENTIFIER: com.pixelatedstudios.RockPaperScissorsPlus
+  SWIFT_VERSION: 6.0
+  IPHONEOS_DEPLOYMENT_TARGET: 18.0
+targets:
+  RockPaperScissorsPlus:
+    type: application
+    platform: iOS
+    sources:
+      - path: RockPaperScissorsPlus
+    resources: []
+    settings:
+      CODE_SIGNING_ALLOWED: NO
