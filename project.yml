@@ -5,6 +5,7 @@ settings:
   PRODUCT_BUNDLE_IDENTIFIER: com.pixelatedstudios.RockPaperScissorsPlus
   SWIFT_VERSION: 6.0
   IPHONEOS_DEPLOYMENT_TARGET: 18.0
+  INFOPLIST_FILE: RockPaperScissorsPlus/Info.plist
 targets:
   RockPaperScissorsPlus:
     type: application
