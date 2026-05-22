@@ -27,7 +27,7 @@ jobs:
           xcodebuild \
             -scheme RockPaperScissorsPlus \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,name=iPhone 15" \
+            -destination "platform=iOS Simulator,name=iPhone 14" \
             -archivePath ${{ runner.temp }}/RockPaperScissorsPlus.xcarchive \
             CODE_SIGNING_ALLOWED=NO \
             clean archive
