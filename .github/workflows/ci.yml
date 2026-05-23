@@ -34,7 +34,8 @@ jobs:
             -sdk iphoneos \
             -destination "generic/platform=iOS" \
             -archivePath ${{ runner.temp }}/RockPaperScissorsPlus.xcarchive \
-            -allowProvisioningUpdates \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
             clean archive
 
       - name: create ipa structure
