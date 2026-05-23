@@ -1,5 +1,5 @@
 # ci.yml
-name: iOS Build
+name: ios build
 
 on:
   push:
@@ -10,34 +10,56 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+
     steps:
-      - name: Checkout code
+      - name: checkout code
         uses: actions/checkout@v4
-      - name: Set up Xcode
+
+      - name: set up xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: "16.0.0"   # Xcode 16 supports iOS 18
-      - name: Install XcodeGen
+          xcode-version: "16.0.0"
+
+      - name: install xcodegen
         run: brew install xcodegen
-      - name: Generate Xcode project
+
+      - name: generate xcode project
         run: |
           xcodegen generate
-      - name: Archive app (unsigned)
+
+      - name: archive app (unsigned)
         run: |
           xcodebuild \
             -scheme RockPaperScissorsPlus \
             -sdk iphoneos \
             -destination "generic/platform=iOS" \
             -archivePath ${{ runner.temp }}/RockPaperScissorsPlus.xcarchive \
+            CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             clean archive
-      - name: Package .app into .ipa (unsigned)
+
+      - name: create ipa structure
         run: |
-          APP_PATH=${{ runner.temp }}/RockPaperScissorsPlus.xcarchive/Products/Applications/RockPaperScissorsPlus.app
-          OUTPUT=${{ runner.temp }}/RockPaperScissorsPlus.ipa
-          cd $(dirname "$APP_PATH")
-          zip -r "$OUTPUT" "$(basename "$APP_PATH")"
-      - name: Upload IPA artifact
+          APP_PATH="${{ runner.temp }}/RockPaperScissorsPlus.xcarchive/Products/Applications/RockPaperScissorsPlus.app"
+
+          IPA_DIR="${{ runner.temp }}/ipa"
+          PAYLOAD_DIR="$IPA_DIR/Payload"
+
+          OUTPUT="${{ runner.temp }}/RockPaperScissorsPlus.ipa"
+
+          mkdir -p "$PAYLOAD_DIR"
+
+          cp -R "$APP_PATH" "$PAYLOAD_DIR/"
+
+          cd "$IPA_DIR"
+
+          zip -r "$OUTPUT" Payload
+
+      - name: verify ipa contents
+        run: |
+          unzip -l "${{ runner.temp }}/RockPaperScissorsPlus.ipa"
+
+      - name: upload ipa artifact
         uses: actions/upload-artifact@v4
         with:
           name: RockPaperScissorsPlus.ipa
