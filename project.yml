@@ -5,6 +5,8 @@ settings:
   PRODUCT_BUNDLE_IDENTIFIER: com.pixelatedstudios.RockPaperScissorsPlus
   SWIFT_VERSION: 6.0
   IPHONEOS_DEPLOYMENT_TARGET: 18.0
+  CODE_SIGN_STYLE: Automatic
+  DEVELOPMENT_TEAM: QA99U7Y63B
   INFOPLIST_FILE: RockPaperScissorsPlus/Info.plist
 targets:
   RockPaperScissorsPlus:
@@ -14,4 +16,4 @@ targets:
       - path: RockPaperScissorsPlus
     resources: []
     settings:
-      CODE_SIGNING_ALLOWED: NO
+      
